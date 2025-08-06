@@ -25,6 +25,7 @@ public class KeyListener implements java.awt.event.KeyListener {
             case KeyEvent.VK_RIGHT -> gameWorld.getPlayer().updateDirection(Direction.E);
             case KeyEvent.VK_DOWN -> gameWorld.getPlayer().updateDirection(Direction.S);
             case KeyEvent.VK_LEFT -> gameWorld.getPlayer().updateDirection(Direction.W);
+            case KeyEvent.VK_C -> gameWorld.getPlayer().updateAnimation();
         }
     }
 
