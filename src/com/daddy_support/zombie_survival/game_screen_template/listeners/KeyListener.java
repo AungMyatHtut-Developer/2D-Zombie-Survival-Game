@@ -21,16 +21,19 @@ public class KeyListener implements java.awt.event.KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> gameWorld.getPlayer().updateDirection(Direction.N);
-            case KeyEvent.VK_RIGHT -> gameWorld.getPlayer().updateDirection(Direction.E);
-            case KeyEvent.VK_DOWN -> gameWorld.getPlayer().updateDirection(Direction.S);
-            case KeyEvent.VK_LEFT -> gameWorld.getPlayer().updateDirection(Direction.W);
+//            case KeyEvent.VK_UP -> gameWorld.getPlayer().updateDirection(Direction.N);
+//            case KeyEvent.VK_RIGHT -> gameWorld.getPlayer().updateDirection(Direction.E);
+//            case KeyEvent.VK_DOWN -> gameWorld.getPlayer().updateDirection(Direction.S);
+//            case KeyEvent.VK_LEFT -> gameWorld.getPlayer().updateDirection(Direction.W);
+            case KeyEvent.VK_W -> gameWorld.getPlayer().setMoving(true);
             case KeyEvent.VK_C -> gameWorld.getPlayer().updateAnimation();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W -> gameWorld.getPlayer().setMoving(false);
+        }
     }
 }

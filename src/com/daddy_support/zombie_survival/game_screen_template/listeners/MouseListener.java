@@ -46,6 +46,6 @@ public class MouseListener implements MouseMotionListener , java.awt.event.Mouse
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        gameWorld.getPlayer().updateDirectionBasedOnMouseMovement(e.getX(), e.getY());
     }
 }

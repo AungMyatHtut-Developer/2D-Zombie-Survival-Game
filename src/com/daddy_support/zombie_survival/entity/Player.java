@@ -22,8 +22,11 @@ public class Player extends GameObj {
     //Animation
     private int animationDelay;
     private int aniTick;
-    private float movementSpeed = 1.0f;
+    private float movementSpeed = 1.5f;
     private float animationSpeed = 5.0f;
+
+    //Player Movement
+    private boolean isMoving = false;
 
     {
         playerSprites = SpriteStore.getPlayerActions(PLAYER_WALK);
@@ -40,16 +43,66 @@ public class Player extends GameObj {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        //g.setColor(Color.WHITE);
+        //g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        if(isMoving){
+            playerAction = PLAYER_WALK;
+        }else{
+            playerAction = PLAYER_IDLE;
+        }
+        playerSprites = SpriteStore.getPlayerActions(playerAction);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(playerSprites[direction.getValue()][aniTick], x, y, 2 * width, 2 * height, null);
+
+        //playerVisualHelper(g2d);
+    }
+
+    public void playerVisualHelper(Graphics2D g2d) {
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(x, y, 2 * width, 2 * height);
+        g2d.setColor(Color.GREEN);
+        g2d.drawOval( x + (width * 2) / 2, y + (height * 2) / 2,5, 5);
     }
 
     @Override
     public void update() {
+
+        if(isMoving) {
+            playerMoveBasedOnDirection();
+        }
+
         animateCharacter();
+    }
+
+    private void playerMoveBasedOnDirection() {
+
+        double diagonalMovement = movementSpeed * 0.7071;
+
+        switch (direction) {
+            case E -> x += movementSpeed;
+            case W -> x -= movementSpeed;
+            case S -> y += movementSpeed;
+            case N -> y -= movementSpeed;
+            case SE -> {
+                x += diagonalMovement;
+                y += diagonalMovement;
+            }
+            case SW -> {
+                x -= diagonalMovement;
+                y += diagonalMovement;
+            }
+            case NW -> {
+                x -= diagonalMovement;
+                y -= diagonalMovement;
+            }
+            case NE -> {
+                x += diagonalMovement;
+                y -= diagonalMovement;
+            }
+        }
+
     }
 
     private void animateCharacter() {
@@ -66,6 +119,33 @@ public class Player extends GameObj {
 
     public void updateDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public void updateDirectionBasedOnMouseMovement(float mouseX, float mouseY) {
+
+        double playerCenterX = x + (width  * 2) / 2;
+        double playerCenterY = y + (height * 2) / 2;
+
+        double radian = Math.atan2(mouseY - playerCenterY, mouseX - playerCenterX);
+        double actualDegree = (Math.toDegrees(radian) + 360) % 360;
+
+        if(actualDegree > 20 && actualDegree < 70) {
+            direction = Direction.SE;
+        } else if (actualDegree > 70 && actualDegree < 110) {
+            direction = Direction.S;
+        }else if (actualDegree > 110 && actualDegree < 160) {
+            direction = Direction.SW;
+        }else if (actualDegree > 160 && actualDegree < 200) {
+            direction = Direction.W;
+        }else if (actualDegree > 200 && actualDegree < 245) {
+            direction = Direction.NW;
+        } else if (actualDegree > 245 && actualDegree < 290) {
+            direction = Direction.N;
+        } else if (actualDegree > 290 && actualDegree < 340) {
+            direction = Direction.NE;
+        }else {
+            direction = Direction.E;
+        }
     }
 
     int actionNumber = 0;
@@ -132,5 +212,9 @@ public class Player extends GameObj {
         }
         this.playerSprites = SpriteStore.getPlayerActions(playerAction);
         actionNumber++;
+    }
+
+    public void setMoving(boolean isMoving) {
+        this.isMoving = isMoving;
     }
 }

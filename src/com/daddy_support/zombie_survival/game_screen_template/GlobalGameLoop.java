@@ -55,7 +55,7 @@ public class GlobalGameLoop implements Runnable{
             //fps tracker
             currentTimeTrackingFPS = System.nanoTime();
             if(currentTimeTrackingFPS - recentTimeTrackingFPS >= 1_000_000_000) {
-                System.out.println("FPS: " + fpsCounter + " Ups: " + upsCounter);
+                //System.out.println("FPS: " + fpsCounter + " Ups: " + upsCounter);
                 fpsCounter = 0;
                 upsCounter = 0;
                 recentTimeTrackingFPS = currentTimeTrackingFPS;
