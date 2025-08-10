@@ -1,9 +1,13 @@
 package com.daddy_support.zombie_survival.resource_loader;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.daddy_support.zombie_survival.resource_loader.SpriteAnimationStore.PLAYER_SPRITE_ACTION.*;
+import static com.daddy_support.zombie_survival.resource_loader.SpriteAnimationStore.MAP_TYPE;
 
 public class SpriteStore {
 
@@ -13,8 +17,11 @@ public class SpriteStore {
     private static final EnumMap<SpriteAnimationStore.PLAYER_SPRITE_ACTION, BufferedImage[][]> playerActions =
             new EnumMap<>(SpriteAnimationStore.PLAYER_SPRITE_ACTION.class);
 
+    private static final Map<String, BufferedImage> maps = new HashMap<>();
+
     static {
         loadAnimations();
+        loadMaps();
     }
 
     private static void loadAnimations() {
@@ -77,6 +84,11 @@ public class SpriteStore {
                 PLAYER_WALK.getSpriteAnimationRowCounts()));
     }
 
+    private static void loadMaps() {
+        BufferedImage map  = SpriteLoader.GetResourceImage(MAP_TYPE.MAP_1.getResourcePath());
+        maps.put(MAP_TYPE.MAP_1.getKey(), map);
+    }
+
     private static BufferedImage[][] loadAnimation(String fileName, int frameColumnCount, int frameRowCount) {
         BufferedImage image = SpriteLoader.GetResourceImage("player/" + fileName);
         BufferedImage[][] animation = new BufferedImage[frameRowCount][frameColumnCount];
@@ -97,6 +109,9 @@ public class SpriteStore {
 
     public static BufferedImage[][] getPlayerActions(SpriteAnimationStore.PLAYER_SPRITE_ACTION action) {
         return playerActions.get(action);
+    }
 
+    public static BufferedImage getMap(MAP_TYPE mapType) {
+        return maps.get(mapType.getKey());
     }
 }

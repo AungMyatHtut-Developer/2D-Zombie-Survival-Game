@@ -1,6 +1,7 @@
 package com.daddy_support.zombie_survival.game_screen_template.listeners;
 
 import com.daddy_support.zombie_survival.GameWorld;
+import com.daddy_support.zombie_survival.game_screen_template.Camera;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -9,9 +10,11 @@ import java.awt.event.MouseWheelListener;
 public class MouseListener implements MouseMotionListener , java.awt.event.MouseListener {
 
     private GameWorld gameWorld;
+    private Camera camera;
 
-    public MouseListener(GameWorld gameWorld) {
+    public MouseListener(GameWorld gameWorld, Camera camera) {
         this.gameWorld = gameWorld;
+        this.camera = camera;
     }
 
     @Override
@@ -46,6 +49,8 @@ public class MouseListener implements MouseMotionListener , java.awt.event.Mouse
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        gameWorld.getPlayer().updateDirectionBasedOnMouseMovement(e.getX(), e.getY());
+        float worldCameraX = camera.getX() + e.getX();
+        float worldCameraY = camera.getY() + e.getY();
+        gameWorld.getPlayer().updateDirectionBasedOnMouseMovement(worldCameraX, worldCameraY);
     }
 }

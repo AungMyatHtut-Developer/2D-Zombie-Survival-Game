@@ -13,10 +13,10 @@ public class DSGameScreen {
     private GlobalGameLoop globalGameLoop;
     private GameWorld gameWorld;
 
-    public DSGameScreen(String title, int width, int height, boolean isResizable, GameWorld gameWorld) {
+    public DSGameScreen(String title, int width, int height, boolean isResizable, GameWorld gameWorld, Camera camera) {
         this.gameWorld = gameWorld;
         KeyListener keyListener = new KeyListener(this.gameWorld);
-        MouseListener mouseListener = new MouseListener(this.gameWorld);
+        MouseListener mouseListener = new MouseListener(this.gameWorld, camera);
 
         gamePanel = new DSPanel(width, height);
         gamePanel.addKeyListener(keyListener);

@@ -48,5 +48,26 @@ public class SpriteAnimationStore {
         }
     }
 
+    public enum MAP_TYPE{
+
+        MAP_1("MAP_1","map/map_1.png");
+
+        String key;
+        String resourcePath;
+
+        MAP_TYPE(String key, String resourcePath){
+           this.key = key;
+           this.resourcePath = resourcePath;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getResourcePath() {
+            return resourcePath;
+        }
+    }
+
 
 }

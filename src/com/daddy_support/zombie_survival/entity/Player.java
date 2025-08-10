@@ -7,13 +7,11 @@ import com.daddy_support.zombie_survival.resource_loader.SpriteStore;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.daddy_support.zombie_survival.constants.GameConstants.GAME_HEIGHT;
-import static com.daddy_support.zombie_survival.constants.GameConstants.GAME_WIDTH;
 import static com.daddy_support.zombie_survival.resource_loader.SpriteAnimationStore.PLAYER_SPRITE_ACTION.*;
 
 public class Player extends GameObj {
 
-    private int x, y;
+    private float x, y;
     private int width, height;
     private BufferedImage[][] playerSprites;
     private Direction direction;
@@ -22,7 +20,7 @@ public class Player extends GameObj {
     //Animation
     private int animationDelay;
     private int aniTick;
-    private float movementSpeed = 1.5f;
+    private float movementSpeed = 2.5f;
     private float animationSpeed = 5.0f;
 
     //Player Movement
@@ -54,16 +52,34 @@ public class Player extends GameObj {
         playerSprites = SpriteStore.getPlayerActions(playerAction);
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(playerSprites[direction.getValue()][aniTick], x, y, 2 * width, 2 * height, null);
+        g2d.drawImage(playerSprites[direction.getValue()][aniTick], (int) x, (int) y, 2 * width, 2 * height, null);
+
+        //playerVisualHelper(g2d);
+    }
+
+    @Override
+    public void render(Graphics g, float cameraX, float cameraY) {
+        //g.setColor(Color.WHITE);
+        //g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        if(isMoving){
+            playerAction = PLAYER_WALK;
+        }else{
+            playerAction = PLAYER_IDLE;
+        }
+        playerSprites = SpriteStore.getPlayerActions(playerAction);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(playerSprites[direction.getValue()][aniTick], (int) ((int) x - cameraX), (int) ((int) y - cameraY), 2 * width, 2 * height, null);
 
         //playerVisualHelper(g2d);
     }
 
     public void playerVisualHelper(Graphics2D g2d) {
         g2d.setColor(Color.BLACK);
-        g2d.drawRect(x, y, 2 * width, 2 * height);
+        g2d.drawRect((int) x, (int) y, 2 * width, 2 * height);
         g2d.setColor(Color.GREEN);
-        g2d.drawOval( x + (width * 2) / 2, y + (height * 2) / 2,5, 5);
+        g2d.drawOval((int) (x + (width * 2) / 2), (int) (y + (height * 2) / 2),5, 5);
     }
 
     @Override
@@ -78,7 +94,7 @@ public class Player extends GameObj {
 
     private void playerMoveBasedOnDirection() {
 
-        double diagonalMovement = movementSpeed * 0.7071;
+        float diagonalMovement = movementSpeed * 0.7071f; //1.345324
 
         switch (direction) {
             case E -> x += movementSpeed;
@@ -216,5 +232,13 @@ public class Player extends GameObj {
 
     public void setMoving(boolean isMoving) {
         this.isMoving = isMoving;
+    }
+
+    public float getPlayerCenterX() {
+        return x + width;
+    }
+
+    public float getPlayerCenterY() {
+        return y + height;
     }
 }
