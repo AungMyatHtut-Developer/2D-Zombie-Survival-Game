@@ -1,6 +1,7 @@
 package com.daddy_support.zombie_survival.game_screen_template;
 
 import com.daddy_support.zombie_survival.GameWorld;
+import com.daddy_support.zombie_survival.collision.CollisionManager;
 import com.daddy_support.zombie_survival.game_screen_template.helper.RenderCallback;
 import com.daddy_support.zombie_survival.game_screen_template.helper.UpdateCallback;
 import com.daddy_support.zombie_survival.game_screen_template.listeners.KeyListener;
@@ -13,10 +14,10 @@ public class DSGameScreen {
     private GlobalGameLoop globalGameLoop;
     private GameWorld gameWorld;
 
-    public DSGameScreen(String title, int width, int height, boolean isResizable, GameWorld gameWorld, Camera camera) {
+    public DSGameScreen(String title, int width, int height, boolean isResizable, GameWorld gameWorld, Camera camera, CollisionManager collisionManager) {
         this.gameWorld = gameWorld;
-        KeyListener keyListener = new KeyListener(this.gameWorld);
-        MouseListener mouseListener = new MouseListener(this.gameWorld, camera);
+        KeyListener keyListener = new KeyListener(this.gameWorld, collisionManager);
+        MouseListener mouseListener = new MouseListener(this.gameWorld, camera, collisionManager);
 
         gamePanel = new DSPanel(width, height);
         gamePanel.addKeyListener(keyListener);

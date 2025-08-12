@@ -1,5 +1,6 @@
 package com.daddy_support.zombie_survival;
 
+import com.daddy_support.zombie_survival.collision.CollisionManager;
 import com.daddy_support.zombie_survival.entity.Direction;
 import com.daddy_support.zombie_survival.entity.Map;
 import com.daddy_support.zombie_survival.entity.Player;
@@ -22,15 +23,19 @@ public class GameWorld implements RenderCallback, UpdateCallback {
     private Map map;
     private Camera camera;
 
+    private CollisionManager collisionManager;
+
     public GameWorld() {
+        collisionManager = new CollisionManager();
         loadResources();
-        gameScreen = new DSGameScreen(GAME_TITLE, GAME_WIDTH, GAME_HEIGHT, IS_RESIZABLE, this, camera);
+        gameScreen = new DSGameScreen(GAME_TITLE, GAME_WIDTH, GAME_HEIGHT, IS_RESIZABLE, this, camera, collisionManager);
         gameScreen.setGameCallbacks(this, this);
         gameScreen.startGame();
     }
 
     private void loadResources() {
         map = new Map(MAP_TYPE.MAP_1);
+        collisionManager.loadMap(map.getMapType().getKey());
         camera = new Camera(GAME_WIDTH, GAME_HEIGHT, map.getWidth(), map.getHeight());
         player = new Player(100, 100, 128, 128, Direction.W);
     }
@@ -38,6 +43,7 @@ public class GameWorld implements RenderCallback, UpdateCallback {
     @Override
     public void render(Graphics g) {
         map.render(g, camera.getX(), camera.getY());
+        collisionManager.render(g, camera.getX(), camera.getY());
         player.render(g, camera.getX(), camera.getY());
     }
 
@@ -50,6 +56,10 @@ public class GameWorld implements RenderCallback, UpdateCallback {
 
     public Player getPlayer() {
         return (Player) player;
+    }
+
+    public Map getMap(){
+        return map;
     }
 
 }

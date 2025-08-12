@@ -31,4 +31,8 @@ public class Map {
     public int getHeight() {
         return height;
     }
+
+    public MAP_TYPE getMapType() {
+        return mapType;
+    }
 }
