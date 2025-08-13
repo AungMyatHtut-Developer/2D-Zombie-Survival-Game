@@ -74,4 +74,37 @@ public class CollisionShape implements Serializable {
     public boolean isClosed() {
         return isClosed;
     }
+
+    //bounding box smallest x, largest x, smallest y and largest y
+    public Rectangle getBoundingBox() {
+        if(vertices.isEmpty()){
+            return new Rectangle();
+        }
+
+        int maxX = Integer.MIN_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+
+
+        for(Point point : vertices){
+            maxX = Math.max(maxX, point.x);
+            maxY = Math.max(maxY, point.y);
+            minX = Math.min(minX, point.x);
+            minY = Math.min(minY, point.y);
+        }
+
+        return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    //polygon
+    public Polygon getPolygon() {
+        Polygon polygon = new Polygon();
+        for(Point point : vertices){
+            polygon.addPoint(point.x, point.y);
+        }
+        return polygon;
+    }
+
+
 }

@@ -37,7 +37,10 @@ public class GameWorld implements RenderCallback, UpdateCallback {
         map = new Map(MAP_TYPE.MAP_1);
         collisionManager.loadMap(map.getMapType().getKey());
         camera = new Camera(GAME_WIDTH, GAME_HEIGHT, map.getWidth(), map.getHeight());
-        player = new Player(100, 100, 128, 128, Direction.W);
+        player = new Player(
+                MAP_TYPE.MAP_1.getPlayerStartPointX(),
+                MAP_TYPE.MAP_1.getPlayerStartPointY(),
+                PLAYER_WIDTH, PLAYER_HEIGHT, Direction.W, this);
     }
 
     @Override
@@ -50,7 +53,15 @@ public class GameWorld implements RenderCallback, UpdateCallback {
     @Override
     public void update() {
         Player p = (Player) player;
-        p.update();
+        float oldX = p.getX();
+        float oldY = p.getY();
+
+        p.update();//player will move
+        Rectangle playerHitBox = p.getHitBox();
+        if(collisionManager.checkCollisions(playerHitBox)) {
+            p.setPosition(oldX, oldY);
+        }
+
         camera.update(p.getPlayerCenterX(), p.getPlayerCenterY());
     }
 
@@ -60,6 +71,10 @@ public class GameWorld implements RenderCallback, UpdateCallback {
 
     public Map getMap(){
         return map;
+    }
+
+    public CollisionManager getCollisionManager() {
+        return collisionManager;
     }
 
 }

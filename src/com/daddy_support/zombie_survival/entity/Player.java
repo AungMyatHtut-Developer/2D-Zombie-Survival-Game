@@ -1,5 +1,6 @@
 package com.daddy_support.zombie_survival.entity;
 
+import com.daddy_support.zombie_survival.GameWorld;
 import com.daddy_support.zombie_survival.game_obj.GameObj;
 import com.daddy_support.zombie_survival.resource_loader.SpriteAnimationStore.PLAYER_SPRITE_ACTION;
 import com.daddy_support.zombie_survival.resource_loader.SpriteStore;
@@ -10,7 +11,6 @@ import java.awt.image.BufferedImage;
 import static com.daddy_support.zombie_survival.resource_loader.SpriteAnimationStore.PLAYER_SPRITE_ACTION.*;
 
 public class Player extends GameObj {
-
     private float x, y;
     private int width, height;
     private BufferedImage[][] playerSprites;
@@ -26,11 +26,15 @@ public class Player extends GameObj {
     //Player Movement
     private boolean isMoving = false;
 
+    //Game World
+    private GameWorld gameWorld;
+
     {
         playerSprites = SpriteStore.getPlayerActions(PLAYER_WALK);
     }
 
-    public Player(int x, int y, int width, int height, Direction direction) {
+    public Player(int x, int y, int width, int height, Direction direction, GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -73,6 +77,19 @@ public class Player extends GameObj {
         g2d.drawImage(playerSprites[direction.getValue()][aniTick], (int) ((int) x - cameraX), (int) ((int) y - cameraY), 2 * width, 2 * height, null);
 
         //playerVisualHelper(g2d);
+        if (gameWorld.getCollisionManager().isEditMode()) {
+            g2d.setColor(Color.WHITE);
+            Rectangle rectangle = getHitBox();
+            g2d.fillRect((int) (rectangle.x - cameraX), (int) (rectangle.y - cameraY), rectangle.width, rectangle.height);
+            drawPlayerGameWorldLocationIndicator(g2d);
+        }
+
+    }
+
+    public void drawPlayerGameWorldLocationIndicator(Graphics2D g2d) {
+        g2d.setColor(Color.WHITE);
+        g2d.setStroke(new BasicStroke(3));
+        g2d.drawString("X : " + (int) x + " Y : "+ (int) y, 20, 20);
     }
 
     public void playerVisualHelper(Graphics2D g2d) {
@@ -119,6 +136,13 @@ public class Player extends GameObj {
             }
         }
 
+    }
+
+    public Rectangle getHitBox(){
+        float hitBoxX = x + 115;
+        float hitBoxY = y + 150;
+
+        return new Rectangle((int) hitBoxX, (int) hitBoxY, width - 100, height - 110);
     }
 
     private void animateCharacter() {
@@ -240,5 +264,18 @@ public class Player extends GameObj {
 
     public float getPlayerCenterY() {
         return y + height;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 }

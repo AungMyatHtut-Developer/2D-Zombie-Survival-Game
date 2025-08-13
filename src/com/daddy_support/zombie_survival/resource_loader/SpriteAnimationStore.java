@@ -50,14 +50,18 @@ public class SpriteAnimationStore {
 
     public enum MAP_TYPE{
 
-        MAP_1("MAP_1","map/map_1.png");
+        MAP_1("MAP_1","map/map_1.png", 504, 1097);
 
         String key;
         String resourcePath;
+        int playerStartPointX;
+        int playerStartPointY;
 
-        MAP_TYPE(String key, String resourcePath){
+        MAP_TYPE(String key, String resourcePath, int playerStartPointX, int playerStartPointY){
            this.key = key;
            this.resourcePath = resourcePath;
+           this.playerStartPointX = playerStartPointX;
+           this.playerStartPointY = playerStartPointY;
         }
 
         public String getKey() {
@@ -66,6 +70,14 @@ public class SpriteAnimationStore {
 
         public String getResourcePath() {
             return resourcePath;
+        }
+
+        public int getPlayerStartPointX() {
+            return playerStartPointX;
+        }
+
+        public int getPlayerStartPointY() {
+            return playerStartPointY;
         }
     }
 
