@@ -4,7 +4,6 @@ public class SpriteAnimationStore {
 
 
     public enum PLAYER_SPRITE_ACTION{
-
         PLAYER_ATTACK_1(8, 14, 3.0f),
         PLAYER_ATTACK_2(8, 14, 3.0f),
         PLAYER_ATTACK_3(8, 14, 3.0f),
@@ -33,6 +32,43 @@ public class SpriteAnimationStore {
           this.spriteAnimationColumnCounts = spriteAnimationColumnCounts;
           this.spriteAnimationRowCounts = spriteAnimationRowCounts;
           this.animationDelay = animationDelay;
+        }
+
+        public int getSpriteAnimationColumnCounts() {
+            return spriteAnimationColumnCounts;
+        }
+
+        public int getSpriteAnimationRowCounts() {
+            return spriteAnimationRowCounts;
+        }
+
+        public float getAnimationDelay() {
+            return animationDelay;
+        }
+    }
+
+    public enum ZOMBIE_SPRITE_ACTION{
+        ZOMBIE_ATTACK_1(8, 15, 3.0f),
+        ZOMBIE_ATTACK_2(8, 15, 3.0f),
+        ZOMBIE_ATTACK_3(8, 15, 3.0f),
+        ZOMBIE_ATTACK_4(8, 15, 3.0f),
+        ZOMBIE_ATTACK_5(8, 15, 3.0f),
+        ZOMBIE_DIE(8, 15, 5.0f),
+        ZOMBIE_DIE2(8, 15, 5.0f),
+        ZOMBIE_IDLE(8, 15, 3.0f),
+        ZOMBIE_IDLE_2(8, 15, 3.0f),
+        ZOMBIE_RUN(8, 15, 1.0f),
+        ZOMBIE_TAKE_DAMAGE(8, 15, 3.0f),
+        ZOMBIE_WALK(8, 15, 3.0f);
+
+        int spriteAnimationColumnCounts;
+        int spriteAnimationRowCounts;
+        float animationDelay;
+
+        ZOMBIE_SPRITE_ACTION(int spriteAnimationRowCounts, int spriteAnimationColumnCounts, float animationDelay){
+            this.spriteAnimationColumnCounts = spriteAnimationColumnCounts;
+            this.spriteAnimationRowCounts = spriteAnimationRowCounts;
+            this.animationDelay = animationDelay;
         }
 
         public int getSpriteAnimationColumnCounts() {

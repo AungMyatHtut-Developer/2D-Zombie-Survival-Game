@@ -33,8 +33,12 @@ public class MouseListener implements MouseMotionListener , java.awt.event.Mouse
             } else if (e.getButton() == MouseEvent.BUTTON3) {
                 collisionManager.closeCurrentShape();
             }
+        }
 
-
+        if (gameWorld.isZombiePlacing()) {
+            float gameWorldX = e.getX() + camera.getX();
+            float gameWorldY = e.getY() + camera.getY();
+            gameWorld.insertNewZombie(gameWorldX, gameWorldY);
         }
     }
 

@@ -4,6 +4,7 @@ import com.daddy_support.zombie_survival.collision.CollisionManager;
 import com.daddy_support.zombie_survival.entity.Direction;
 import com.daddy_support.zombie_survival.entity.Map;
 import com.daddy_support.zombie_survival.entity.Player;
+import com.daddy_support.zombie_survival.entity.Zombie;
 import com.daddy_support.zombie_survival.game_obj.GameObj;
 import com.daddy_support.zombie_survival.game_screen_template.Camera;
 import com.daddy_support.zombie_survival.game_screen_template.DSGameScreen;
@@ -11,7 +12,10 @@ import com.daddy_support.zombie_survival.game_screen_template.helper.RenderCallb
 import com.daddy_support.zombie_survival.game_screen_template.helper.UpdateCallback;
 import com.daddy_support.zombie_survival.resource_loader.SpriteAnimationStore.MAP_TYPE;
 
+
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.daddy_support.zombie_survival.constants.GameConstants.*;
 
@@ -19,6 +23,8 @@ public class GameWorld implements RenderCallback, UpdateCallback {
 
     private DSGameScreen gameScreen;
     private GameObj player;
+    private List<GameObj> zombies;
+    private boolean isZombiePlacing;
 
     private Map map;
     private Camera camera;
@@ -41,6 +47,7 @@ public class GameWorld implements RenderCallback, UpdateCallback {
                 MAP_TYPE.MAP_1.getPlayerStartPointX(),
                 MAP_TYPE.MAP_1.getPlayerStartPointY(),
                 PLAYER_WIDTH, PLAYER_HEIGHT, Direction.W, this);
+        zombies = new ArrayList<>();
     }
 
     @Override
@@ -48,6 +55,12 @@ public class GameWorld implements RenderCallback, UpdateCallback {
         map.render(g, camera.getX(), camera.getY());
         collisionManager.render(g, camera.getX(), camera.getY());
         player.render(g, camera.getX(), camera.getY());
+
+        for(GameObj zombie: zombies) {
+            zombie.render(g, camera.getX(), camera.getY());
+        }
+
+        drawHelperIndicator(g);
     }
 
     @Override
@@ -63,6 +76,19 @@ public class GameWorld implements RenderCallback, UpdateCallback {
         }
 
         camera.update(p.getPlayerCenterX(), p.getPlayerCenterY());
+
+        for (GameObj zombie: zombies) {
+            zombie.update();
+        }
+    }
+
+    public void drawHelperIndicator(Graphics g) {
+        if (isZombiePlacing) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(Color.WHITE);
+            g2d.setStroke(new BasicStroke(5));
+            g2d.drawString("Zombies Placing Mode: ON", 20, 50);
+        }
     }
 
     public Player getPlayer() {
@@ -75,6 +101,19 @@ public class GameWorld implements RenderCallback, UpdateCallback {
 
     public CollisionManager getCollisionManager() {
         return collisionManager;
+    }
+
+    public void insertNewZombie(float gameWorldX, float gameWorldY) {
+        Zombie zombie = new Zombie(gameWorldX - ZOMBIE_WIDTH, gameWorldY - ZOMBIE_HEIGHT, Direction.NE, this);
+        zombies.add(zombie);
+    }
+
+    public boolean isZombiePlacing() {
+        return isZombiePlacing;
+    }
+
+    public void toggleIsZombiePlacing() {
+        isZombiePlacing = !isZombiePlacing;
     }
 
 }

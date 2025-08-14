@@ -7,4 +7,6 @@ public class GameConstants {
     public static final boolean IS_RESIZABLE = false;
     public static final int PLAYER_WIDTH = 128;
     public static final int PLAYER_HEIGHT = 128;
+    public static final int ZOMBIE_WIDTH = 128;
+    public static final int ZOMBIE_HEIGHT = 128;
 }

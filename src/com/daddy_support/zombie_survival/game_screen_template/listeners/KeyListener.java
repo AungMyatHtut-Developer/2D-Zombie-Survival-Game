@@ -25,6 +25,7 @@ public class KeyListener implements java.awt.event.KeyListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W -> gameWorld.getPlayer().setMoving(true);
             case KeyEvent.VK_C -> collisionManager.toggleEditMode();
+            case KeyEvent.VK_Z ->  gameWorld.toggleIsZombiePlacing();
             case KeyEvent.VK_SPACE -> collisionManager.snapShotMap(gameWorld.getMap().getMapType().getKey());
         }
 
